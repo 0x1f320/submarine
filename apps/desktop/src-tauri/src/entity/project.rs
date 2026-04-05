@@ -1,4 +1,5 @@
 use sea_orm::entity::prelude::*;
+use sea_orm::ActiveValue::Set;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 
@@ -16,4 +17,17 @@ pub struct Model {
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {}
 
-impl ActiveModelBehavior for ActiveModel {}
+#[async_trait::async_trait]
+impl ActiveModelBehavior for ActiveModel {
+	async fn before_save<C>(mut self, _db: &C, insert: bool) -> Result<Self, DbErr>
+	where
+		C: ConnectionTrait,
+	{
+		let now = chrono::Utc::now();
+		self.updated_at = Set(now);
+		if insert {
+			self.created_at = Set(now);
+		}
+		Ok(self)
+	}
+}
