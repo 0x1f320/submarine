@@ -23,7 +23,7 @@ Tauri v2 desktop app. Frontend is React 19 + TypeScript + Vite, backend is Rust 
 ### Rust (Backend)
 
 - **Module-based organization** — Rust code is organized by module (`mod`), not one-file-per-function. Cohesive functionality lives in a single module; only expose the minimum public interface via `pub`.
-- **`cargo fmt`** + **`cargo clippy`** for formatting/linting.
+- **`cargo fmt`** for formatting, **`cargo clippy`** for linting. Clippy is configured with `clippy::all` + `clippy::pedantic` warnings in `Cargo.toml`.
 
 ## Git Workflow
 
