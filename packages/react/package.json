@@ -26,12 +26,14 @@
 		"typecheck": "tsc --noEmit",
 		"dev": "tsdown --watch"
 	},
+	"dependencies": {
+		"socket.io-client": "^4.8.3"
+	},
 	"devDependencies": {
 		"@submarine/types": "workspace:*",
 		"@submarine/typescript-config": "workspace:*",
 		"@types/react": "^19.1.8",
 		"bippy": "^0.5.37",
-		"socket.io-client": "^4.8.3",
 		"tsdown": "^0.21.7",
 		"typescript": "~5.8.3"
 	},

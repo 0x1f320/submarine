@@ -54,10 +54,7 @@ pub async fn start() -> SocketState {
                         hyper_util::rt::TokioExecutor::new(),
                     );
                     let _ = builder
-                        .serve_connection(
-                            hyper_util::rt::TokioIo::new(stream),
-                            svc,
-                        )
+                        .serve_connection(hyper_util::rt::TokioIo::new(stream), svc)
                         .await;
                 });
             }
