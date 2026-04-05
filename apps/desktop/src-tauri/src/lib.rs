@@ -4,12 +4,15 @@ use tauri_specta::{collect_commands, Builder};
 mod command;
 mod db;
 mod entity;
+mod socket;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let builder = Builder::<tauri::Wry>::new().commands(collect_commands![
         command::project::list_projects,
         command::project::create_project,
+        command::socket::get_socket_port,
+        command::socket::get_socket_status,
     ]);
 
     #[cfg(debug_assertions)]
@@ -24,6 +27,7 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(builder.invoke_handler())
         .setup(|app| {
+            // Database
             let app_data_dir = app.path().app_data_dir()?;
             std::fs::create_dir_all(&app_data_dir)?;
             let db_path = app_data_dir.join("submarine.db");
@@ -34,6 +38,11 @@ pub fn run() {
             .expect("Failed to initialize database");
 
             app.manage(db);
+
+            // Socket.IO server
+            let socket_state = tauri::async_runtime::block_on(socket::start());
+            app.manage(socket_state);
+
             Ok(())
         })
         .run(tauri::generate_context!())

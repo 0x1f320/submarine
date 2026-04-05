@@ -59,14 +59,14 @@ pub struct ComponentNode {
     pub children: Vec<ComponentNode>,
 }
 
-/// The phase that triggered a React commit.
+/// The phase that triggered a React render (matches bippy's `RenderPhase`).
 #[derive(Debug, Clone, Serialize, Deserialize, TS)]
 #[ts(export)]
-#[serde(rename_all = "kebab-case")]
+#[serde(rename_all = "lowercase")]
 pub enum RenderPhase {
     Mount,
     Update,
-    NestedUpdate,
+    Unmount,
 }
 
 /// Data for a single React commit event.
@@ -81,6 +81,21 @@ pub struct CommitData {
     pub timestamp: f64,
 }
 
+// ---------------------------------------------------------------------------
+// Socket.IO event payloads
+// ---------------------------------------------------------------------------
+
+/// Events sent from the instrumented browser (`@submarine/react`) to the
+/// Tauri backend via Socket.IO.
+#[derive(Debug, Clone, Serialize, Deserialize, TS)]
+#[ts(export)]
+#[serde(tag = "type", content = "data")]
+pub enum ClientToServer {
+    /// A React commit was captured.
+    #[serde(rename = "commit")]
+    Commit(CommitData),
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -89,5 +104,6 @@ mod tests {
     fn export_ts_bindings() {
         ComponentNode::export_all().expect("Failed to export ComponentNode");
         CommitData::export_all().expect("Failed to export CommitData");
+        ClientToServer::export_all().expect("Failed to export ClientToServer");
     }
 }
