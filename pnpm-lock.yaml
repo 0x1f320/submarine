@@ -93,13 +93,13 @@ importers:
 
   packages/react:
     dependencies:
-      '@submarine/types':
-        specifier: workspace:*
-        version: link:../types
       react:
         specifier: ^19.1.0
         version: 19.2.4
     devDependencies:
+      '@submarine/types':
+        specifier: workspace:*
+        version: link:../types
       '@submarine/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config

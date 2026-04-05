@@ -1,3 +1,4 @@
+import type { ComponentKind, ComponentNode } from "@submarine/types";
 import {
 	ClassComponentTag,
 	ContextConsumerTag,
@@ -21,7 +22,6 @@ import {
 	setFiberId,
 	shouldFilterFiber,
 } from "bippy";
-import type { ComponentKind, ComponentNode } from "./types.js";
 
 function resolveKind(fiber: Fiber): ComponentKind {
 	switch (fiber.tag) {

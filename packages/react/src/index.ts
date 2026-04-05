@@ -4,9 +4,5 @@ export { parseFiber } from "./parse-fiber.js";
 export type {
 	CommitData,
 	CommitListener,
-	ComponentKind,
-	ComponentNode,
-	RenderPhase,
-	Timings,
 	Unsubscribe,
 } from "./types.js";

@@ -1,13 +1,6 @@
 import type { ComponentNode } from "@submarine/types";
 import type { Fiber, RenderPhase } from "bippy";
 
-export type {
-	ComponentKind,
-	ComponentNode,
-	RenderPhase,
-	Timings,
-} from "@submarine/types";
-
 export interface CommitData {
 	/** The phase that triggered this commit */
 	phase: RenderPhase;
