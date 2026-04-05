@@ -11,7 +11,11 @@
 	},
 	"overrides": [
 		{
-			"includes": ["apps/*/src/components/ui/**", "apps/*/src/lib/utils.ts", "apps/*/src/bindings.ts"],
+			"includes": [
+				"apps/*/src/components/ui/**",
+				"apps/*/src/lib/utils.ts",
+				"apps/*/src/bindings.ts"
+			],
 			"linter": { "enabled": false },
 			"formatter": { "enabled": false },
 			"assist": { "enabled": false }
