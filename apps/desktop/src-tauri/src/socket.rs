@@ -185,7 +185,9 @@ async fn resolve_page(db: &DatabaseConnection, raw_url: &str) -> Result<(i32, i3
         .await
         .map_err(|e| e.to_string())?;
 
-    let proj = if let Some(p) = proj { p } else {
+    let proj = if let Some(p) = proj {
+        p
+    } else {
         let model = project::ActiveModel {
             name: Set(host.clone()),
             path: Set(String::new()),
@@ -203,7 +205,9 @@ async fn resolve_page(db: &DatabaseConnection, raw_url: &str) -> Result<(i32, i3
         .await
         .map_err(|e| e.to_string())?;
 
-    let pg = if let Some(p) = pg { p } else {
+    let pg = if let Some(p) = pg {
+        p
+    } else {
         let model = page::ActiveModel {
             project_id: Set(proj.id),
             url: Set(raw_url.to_string()),
