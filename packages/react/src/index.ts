@@ -6,5 +6,7 @@ export type {
 	CommitListener,
 	ComponentKind,
 	ComponentNode,
+	RenderPhase,
+	Timings,
 	Unsubscribe,
 } from "./types.js";

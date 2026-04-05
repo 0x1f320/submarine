@@ -24,6 +24,9 @@
 		"typecheck": "tsc --noEmit",
 		"dev": "tsdown --watch"
 	},
+	"dependencies": {
+		"@submarine/types": "workspace:*"
+	},
 	"devDependencies": {
 		"@submarine/typescript-config": "workspace:*",
 		"@types/react": "^19.1.8",

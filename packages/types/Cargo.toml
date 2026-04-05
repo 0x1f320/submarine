@@ -1,0 +1,15 @@
+[package]
+name = "submarine-types"
+version = "0.1.0"
+edition = "2021"
+description = "Shared types for the Submarine desktop app"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+ts-rs = { version = "10", features = ["serde-compat", "serde-json-impl"] }
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+module_name_repetitions = "allow"
