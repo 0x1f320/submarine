@@ -11,14 +11,34 @@ pnpm workspaces monorepo with Turborepo. Desktop app (Tauri v2) with shared Type
 - `pnpm check:fix` — Biome auto-fix
 - `pnpm --filter <package> <script>` — Run a script in a specific package
 
+## Tech Stack
+
+### Frontend
+- **React 19** + **TypeScript** + **Vite**
+- **Tailwind CSS v4** — via `@tailwindcss/vite` plugin. Theme tokens defined in `app.css` using `@theme inline`.
+- **shadcn/ui** — Component library. Components live in `src/components/ui/`. Generated via `npx shadcn@latest add <component>`. Config in `components.json`.
+- **Geist Variable** — Font loaded via `@fontsource-variable/geist`.
+
+### Backend
+- **Tauri v2** — Desktop shell. Config in `src-tauri/tauri.conf.json`, capabilities in `src-tauri/capabilities/`.
+
+### Window
+- Custom titlebar: `titleBarStyle: "Overlay"`, `hiddenTitle: true`. Traffic light position set via `trafficLightPosition`.
+- `data-tauri-drag-region` on titlebar elements for window dragging.
+- Dark mode syncs with Tauri window theme via `getCurrentWindow().setTheme()`.
+- Required capabilities: `core:window:allow-start-dragging`, `core:window:allow-set-theme`.
+
 ## Code Style
 
 ### TypeScript (Frontend)
 
-- **Formatter/Linter**: Biome (tabs, recommended rules)
+- **Formatter/Linter**: Biome (tabs, recommended rules). Biome is configured with `tailwindDirectives: true` for Tailwind CSS support.
+- **File naming**: All `.ts`/`.tsx` files use **lower kebab-case** (e.g. `metric-card.tsx`, `use-theme.ts`). No PascalCase or camelCase file names.
 - **One file per function** — Utilities, hooks, and components each go in their own file. Each file has a single responsibility.
 - **TypeScript strict mode** — `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch` enabled.
+- **Import alias**: `@/*` maps to `./src/*` (configured in `tsconfig.json` and `vite.config.ts`).
 - **Import sorting**: Biome `organizeImports`.
+- **shadcn files are excluded from Biome** — `components/ui/**` and `lib/utils.ts` are ignored via `overrides` in `biome.json`. Do not manually format or lint these files.
 
 ### Rust (Backend)
 
@@ -40,9 +60,15 @@ pnpm workspaces monorepo with Turborepo. Desktop app (Tauri v2) with shared Type
 │
 ├── apps/
 │   └── desktop/            # @submarine/desktop — Tauri v2 desktop app
+│       ├── components.json # shadcn/ui config
 │       ├── src/            # Frontend (React 19 + TypeScript + Vite)
 │       │   ├── main.tsx    # React app entry point
-│       │   ├── App.tsx     # Root component
+│       │   ├── app.tsx     # Root component
+│       │   ├── app.css     # Tailwind imports + theme tokens (light/dark)
+│       │   ├── components/ # App components (one per file, kebab-case)
+│       │   │   └── ui/     # shadcn/ui generated components (do not edit)
+│       │   ├── hooks/      # React hooks (use-theme.ts, use-resize.ts, etc.)
+│       │   ├── lib/        # Utilities (utils.ts — shadcn cn() helper)
 │       │   └── assets/
 │       ├── src-tauri/      # Backend (Rust + Tauri)
 │       │   ├── src/
