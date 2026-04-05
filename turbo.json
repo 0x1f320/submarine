@@ -7,7 +7,8 @@
 		},
 		"dev": {
 			"cache": false,
-			"persistent": true
+			"persistent": true,
+			"ui": "tui"
 		},
 				"typecheck": {
 			"dependsOn": ["^build"]
