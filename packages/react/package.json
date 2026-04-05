@@ -18,13 +18,19 @@
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.cts",
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"build": "tsdown",
 		"typecheck": "tsc --noEmit",
 		"dev": "tsdown --watch"
 	},
+	"dependencies": {
+		"socket.io-client": "^4.8.3"
+	},
 	"devDependencies": {
+		"@submarine/types": "workspace:*",
 		"@submarine/typescript-config": "workspace:*",
 		"@types/react": "^19.1.8",
 		"bippy": "^0.5.37",

@@ -15,10 +15,17 @@ BASE="$1"
 AFFECTED_JSON=$(npx turbo run build --filter="...[$BASE]" --dry-run=json 2>/dev/null)
 
 for dir in apps/*/ packages/*/; do
-  name=$(basename "$dir")
+  dir_name=$(basename "$dir")
+  pkg_json="$dir/package.json"
+
+  if [ ! -f "$pkg_json" ]; then
+    continue
+  fi
+
+  pkg_name=$(jq -r '.name' "$pkg_json")
   found=$(echo "$AFFECTED_JSON" | jq -r \
-    --arg name "$name" \
+    --arg name "$pkg_name" \
     'if [.tasks[] | select(.package == $name)] | length > 0
      then "true" else "false" end')
-  echo "$name=$found" >> "$GITHUB_OUTPUT"
+  echo "$dir_name=$found" >> "$GITHUB_OUTPUT"
 done

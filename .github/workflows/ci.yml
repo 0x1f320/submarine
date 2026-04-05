@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       desktop: ${{ steps.affected.outputs.desktop }}
+      desktop-tauri: ${{ steps.paths.outputs.tauri }}
       react: ${{ steps.affected.outputs.react }}
       mcp: ${{ steps.affected.outputs.mcp }}
     steps:
@@ -36,6 +37,17 @@ jobs:
             echo "base=HEAD~1" >> "$GITHUB_OUTPUT"
           fi
 
+      - uses: dorny/paths-filter@v3
+        id: paths
+        with:
+          base: ${{ steps.base-ref.outputs.base }}
+          filters: |
+            tauri:
+              - 'apps/desktop/src-tauri/**'
+              - 'packages/types/**'
+              - 'Cargo.toml'
+              - 'Cargo.lock'
+
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -53,6 +65,8 @@ jobs:
     needs: check-affected
     if: needs.check-affected.outputs.desktop == 'true'
     uses: ./.github/workflows/desktop.yml
+    with:
+      tauri-changed: ${{ needs.check-affected.outputs.desktop-tauri == 'true' }}
 
   react:
     name: React

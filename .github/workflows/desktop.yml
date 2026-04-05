@@ -2,6 +2,12 @@ name: Desktop
 
 on:
   workflow_call:
+    inputs:
+      tauri-changed:
+        description: Whether src-tauri/ files changed
+        type: boolean
+        required: false
+        default: true
 
 env:
   CARGO_TERM_COLOR: always
@@ -17,6 +23,16 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm turbo run typecheck --filter=@submarine/desktop...
+
+  rust-check:
+    name: Rust Check
+    if: inputs.tauri-changed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy, rustfmt
@@ -24,9 +40,6 @@ jobs:
         with:
           workspaces: apps/desktop/src-tauri -> target
       - run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm check
-      - run: pnpm turbo run typecheck --filter=@submarine/desktop...
       - name: cargo fmt & clippy
         working-directory: apps/desktop/src-tauri
         run: cargo fmt --check && cargo clippy -- -D warnings
@@ -34,6 +47,7 @@ jobs:
   build:
     name: Build (${{ matrix.os }})
     needs: check
+    if: inputs.tauri-changed
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false

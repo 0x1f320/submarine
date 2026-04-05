@@ -1,0 +1,15 @@
+{
+	"name": "@submarine/types",
+	"private": true,
+	"version": "0.1.0",
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./bindings/index.ts"
+		}
+	},
+	"scripts": {
+		"build": "cargo test -p submarine-types",
+		"dev": "watchexec -w src -e rs -- cargo test -p submarine-types"
+	}
+}
