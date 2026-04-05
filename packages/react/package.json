@@ -3,19 +3,32 @@
 	"private": true,
 	"version": "0.1.0",
 	"type": "module",
-	"main": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"scripts": {
-		"build": "tsc",
-		"typecheck": "tsc --noEmit",
-		"dev": "tsc --watch"
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.mts",
+				"default": "./dist/index.mjs"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			}
+		}
 	},
-	"dependencies": {
-		"react": "^19.1.0"
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.cts",
+	"files": ["dist"],
+	"scripts": {
+		"build": "tsdown",
+		"typecheck": "tsc --noEmit",
+		"dev": "tsdown --watch"
 	},
 	"devDependencies": {
 		"@submarine/typescript-config": "workspace:*",
 		"@types/react": "^19.1.8",
+		"bippy": "^0.5.37",
+		"tsdown": "^0.21.7",
 		"typescript": "~5.8.3"
 	},
 	"peerDependencies": {
