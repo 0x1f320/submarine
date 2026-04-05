@@ -16,7 +16,7 @@ pnpm workspaces monorepo with Turborepo. Desktop app (Tauri v2) with shared Type
 ### Frontend
 - **React 19** + **TypeScript** + **Vite**
 - **Tailwind CSS v4** — via `@tailwindcss/vite` plugin. Theme tokens defined in `app.css` using `@theme inline`.
-- **shadcn/ui** — Component library. Components live in `src/components/ui/`. Generated via `npx shadcn@latest add <component>`. Config in `components.json`.
+- **shadcn/ui** — Component library. Components live in `src/components/ui/`. Generated via `npx shadcn@latest add <component>`. Config in `components.json`. **Prefer shadcn/ui components over custom implementations** — always check if a suitable shadcn component exists before building from scratch.
 - **Pretendard Variable** — Font bundled locally in `src/assets/fonts/`. Loaded via `@font-face` in `app.css`.
 
 ### Backend

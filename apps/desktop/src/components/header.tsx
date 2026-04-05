@@ -1,6 +1,6 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { useTheme } from "@/hooks/use-theme";
+import { useProjectStore } from "@/stores/project-store";
 
 type Theme = ReturnType<typeof useTheme>["theme"];
 
@@ -64,26 +64,19 @@ export function Header({
 	theme: Theme;
 	onThemeChange: (theme: Theme) => void;
 }) {
+	const selectedProject = useProjectStore((s) => s.selectedProject);
+	const title = selectedProject?.name ?? "Submarine";
+
 	return (
 		<header
 			data-tauri-drag-region
 			className="flex items-center justify-between flex-1 h-full px-4 bg-background"
 		>
-			<div className="flex items-center gap-2">
-				<h1 className="text-sm font-semibold">Dashboard</h1>
-				<Badge variant="secondary" className="text-xs font-normal">
-					localhost:3000
-				</Badge>
-			</div>
+			<h1 data-tauri-drag-region className="text-sm font-semibold select-none">
+				{title}
+			</h1>
 
 			<div className="flex items-center gap-2">
-				<Button size="sm" variant="default" className="h-7 gap-2.5 text-xs">
-					<span className="size-1.5 rounded-full bg-current animate-pulse shrink-0" />
-					Recording
-				</Button>
-				<Button size="sm" variant="outline" className="h-7 text-xs">
-					Clear
-				</Button>
 				<Button
 					size="icon"
 					variant="ghost"
