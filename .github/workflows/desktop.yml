@@ -13,8 +13,8 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  check:
-    name: Check
+  check-web:
+    name: Check for Web
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,8 +27,22 @@ jobs:
       - run: pnpm check
       - run: pnpm turbo run typecheck --filter=@submarine/desktop...
 
-  rust-check:
-    name: Rust Check
+  build-web:
+    name: Build for Web
+    needs: check-web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm turbo run build --filter=@submarine/desktop...
+
+  check-rust:
+    name: Check for Rust
     if: inputs.tauri-changed
     runs-on: ubuntu-latest
     steps:
@@ -44,9 +58,9 @@ jobs:
         working-directory: apps/desktop/src-tauri
         run: cargo fmt --check && cargo clippy -- -D warnings
 
-  build:
-    name: Build (${{ matrix.os }})
-    needs: check
+  build-rust:
+    name: Build for Rust (${{ matrix.os }})
+    needs: check-rust
     if: inputs.tauri-changed
     runs-on: ${{ matrix.os }}
     strategy:
