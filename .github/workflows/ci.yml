@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       desktop: ${{ steps.affected.outputs.desktop }}
+      desktop-tauri: ${{ steps.affected.outputs.desktop-tauri }}
       react: ${{ steps.affected.outputs.react }}
       mcp: ${{ steps.affected.outputs.mcp }}
     steps:
@@ -53,6 +54,8 @@ jobs:
     needs: check-affected
     if: needs.check-affected.outputs.desktop == 'true'
     uses: ./.github/workflows/desktop.yml
+    with:
+      tauri-changed: ${{ needs.check-affected.outputs.desktop-tauri == 'true' }}
 
   react:
     name: React

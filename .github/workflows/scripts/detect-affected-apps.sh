@@ -29,3 +29,11 @@ for dir in apps/*/ packages/*/; do
      then "true" else "false" end')
   echo "$dir_name=$found" >> "$GITHUB_OUTPUT"
 done
+
+# Check if Rust/Tauri source files actually changed (not just downstream TS deps)
+CHANGED_FILES=$(git diff --name-only "$BASE" -- 2>/dev/null || true)
+if echo "$CHANGED_FILES" | grep -q '^apps/desktop/src-tauri/'; then
+  echo "desktop-tauri=true" >> "$GITHUB_OUTPUT"
+else
+  echo "desktop-tauri=false" >> "$GITHUB_OUTPUT"
+fi
