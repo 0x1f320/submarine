@@ -15,7 +15,7 @@ impl MigratorTrait for Migrator {
 struct CreateProjectTable;
 
 impl MigrationName for CreateProjectTable {
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "m20260405_000001_create_project"
     }
 }
