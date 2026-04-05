@@ -1,0 +1,5 @@
+{
+	"extends": "@submarine/typescript-config/react-app.json",
+	"include": ["src"],
+	"references": [{ "path": "./tsconfig.node.json" }]
+}

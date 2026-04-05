@@ -1,15 +1,15 @@
 # submarine
 
-Tauri v2 desktop app. Frontend is React 19 + TypeScript + Vite, backend is Rust (Tauri).
+pnpm workspaces monorepo with Turborepo. Desktop app (Tauri v2) with shared TypeScript packages.
 
 ## Commands
 
-- `pnpm dev` — Vite dev server (port 1420)
-- `pnpm build` — TypeScript check + Vite build
+- `pnpm dev` — Tauri dev mode (frontend + Rust simultaneously)
+- `pnpm build` — Build all packages (via Turborepo, with caching)
+- `pnpm typecheck` — TypeScript type-check all packages (via Turborepo)
 - `pnpm check` — Biome lint + format check
 - `pnpm check:fix` — Biome auto-fix
-- `pnpm tauri dev` — Tauri dev mode (frontend + Rust simultaneously)
-- `pnpm tauri build` — Production build
+- `pnpm --filter <package> <script>` — Run a script in a specific package
 
 ## Code Style
 
@@ -34,19 +34,39 @@ Tauri v2 desktop app. Frontend is React 19 + TypeScript + Vite, backend is Rust 
 ## Project Structure
 
 ```
-src/                    # Frontend (React + TypeScript)
-├── main.tsx            # React app entry point
-├── App.tsx             # Root component
-├── App.css
-├── assets/
-└── vite-env.d.ts
-
-src-tauri/              # Backend (Rust + Tauri)
-├── src/
-│   ├── main.rs         # Tauri entry point
-│   └── lib.rs          # Tauri commands, plugin registration
-├── Cargo.toml
-├── tauri.conf.json     # Tauri configuration
-├── capabilities/
-└── icons/
+├── turbo.json              # Turborepo task definitions
+├── biome.json              # Shared Biome config (lint + format)
+├── pnpm-workspace.yaml     # Workspace: apps/*, packages/*
+│
+├── apps/
+│   └── desktop/            # @submarine/desktop — Tauri v2 desktop app
+│       ├── src/            # Frontend (React 19 + TypeScript + Vite)
+│       │   ├── main.tsx    # React app entry point
+│       │   ├── App.tsx     # Root component
+│       │   └── assets/
+│       ├── src-tauri/      # Backend (Rust + Tauri)
+│       │   ├── src/
+│       │   │   ├── main.rs # Tauri entry point
+│       │   │   └── lib.rs  # Tauri commands, plugin registration
+│       │   ├── Cargo.toml
+│       │   ├── tauri.conf.json
+│       │   ├── capabilities/
+│       │   └── icons/
+│       ├── index.html
+│       ├── vite.config.ts
+│       └── tsconfig.json   # extends @submarine/typescript-config/react-app.json
+│
+└── packages/
+    ├── typescript-config/  # @submarine/typescript-config — shared tsconfig presets
+    │   ├── base.json       # Common strict settings
+    │   ├── library.json    # TS library (declaration output)
+    │   ├── react-library.json  # React library (jsx + DOM + declaration)
+    │   ├── react-app.json  # React app (noEmit, bundler)
+    │   └── vite.json       # Vite config (composite)
+    ├── mcp/                # @submarine/mcp
+    │   ├── src/
+    │   └── tsconfig.json   # extends @submarine/typescript-config/library.json
+    └── react/              # @submarine/react
+        ├── src/
+        └── tsconfig.json   # extends @submarine/typescript-config/react-library.json
 ```
