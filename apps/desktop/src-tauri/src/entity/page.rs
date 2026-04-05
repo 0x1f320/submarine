@@ -1,29 +1,39 @@
 use sea_orm::entity::prelude::*;
 use sea_orm::ActiveValue::Set;
 use serde::{Deserialize, Serialize};
-use specta::Type;
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Serialize, Deserialize, Type)]
-#[sea_orm(table_name = "project")]
+#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Serialize, Deserialize)]
+#[sea_orm(table_name = "page")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
-    pub name: String,
-    pub path: String,
-    pub host: String,
+    pub project_id: i32,
+    pub url: String,
     pub created_at: DateTimeUtc,
     pub updated_at: DateTimeUtc,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::page::Entity")]
-    Page,
+    #[sea_orm(
+        belongs_to = "super::project::Entity",
+        from = "Column::ProjectId",
+        to = "super::project::Column::Id"
+    )]
+    Project,
+    #[sea_orm(has_many = "super::commit::Entity")]
+    Commit,
 }
 
-impl Related<super::page::Entity> for Entity {
+impl Related<super::project::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Page.def()
+        Relation::Project.def()
+    }
+}
+
+impl Related<super::commit::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Commit.def()
     }
 }
 

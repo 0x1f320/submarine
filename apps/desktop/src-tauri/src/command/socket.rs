@@ -21,5 +21,6 @@ pub fn get_socket_status(state: State<'_, SocketState>) -> SocketStatus {
         listening: true,
         port: state.port,
         connected_clients,
+        connected_projects: state.connected_projects.list(),
     }
 }

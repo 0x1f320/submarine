@@ -20,10 +20,12 @@ pub async fn create_project(
     db: State<'_, DatabaseConnection>,
     name: String,
     path: String,
+    host: String,
 ) -> Result<project::Model, String> {
     let model = project::ActiveModel {
         name: Set(name),
         path: Set(path),
+        host: Set(host),
         ..Default::default()
     };
     model.insert(db.inner()).await.map_err(|e| e.to_string())
