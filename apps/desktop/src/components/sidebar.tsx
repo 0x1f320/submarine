@@ -1,4 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import { NavLink } from "react-router";
+import { commands } from "@/bindings";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProjects } from "@/hooks/use-projects";
 import { useProjectStore } from "@/stores/project-store";
@@ -6,6 +8,12 @@ import { useProjectStore } from "@/stores/project-store";
 export function Sidebar({ width }: { width: number }) {
 	const { data: projects, isLoading } = useProjects();
 	const selectProject = useProjectStore((s) => s.selectProject);
+	const { data: socketStatus } = useQuery({
+		queryKey: ["socketStatus"],
+		queryFn: () => commands.getSocketStatus(),
+		refetchInterval: 2000,
+	});
+	const connectedProjects = new Set(socketStatus?.connectedProjects ?? []);
 
 	return (
 		<aside
@@ -62,7 +70,15 @@ export function Sidebar({ width }: { width: number }) {
 								>
 									<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z" />
 								</svg>
-								<span className="truncate">{project.name}</span>
+								<span className="truncate flex-1">{project.name}</span>
+								{connectedProjects.has(project.id) ? (
+									<span className="relative flex size-1.5 shrink-0">
+										<span className="absolute inline-flex size-full animate-ping rounded-full bg-green-400 opacity-75" />
+										<span className="relative inline-flex size-2 rounded-full bg-green-500" />
+									</span>
+								) : (
+									<span className="size-1.5 shrink-0 rounded-full bg-muted-foreground/30" />
+								)}
 							</NavLink>
 						))
 					)}

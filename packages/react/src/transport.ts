@@ -7,6 +7,8 @@ import type { CommitData, Unsubscribe } from "./types.js";
 export interface ConnectOptions {
 	/** Socket.IO server URL (e.g. "http://localhost:9284"). */
 	url: string;
+	/** Page URL to associate commits with. Defaults to `window.location.href`. */
+	pageUrl?: string;
 }
 
 /** Active socket instance, if connected. */
@@ -25,12 +27,17 @@ export function connect(options: ConnectOptions): Unsubscribe {
 		return () => disconnect();
 	}
 
+	const pageUrl =
+		options.pageUrl ??
+		(typeof window !== "undefined" ? window.location.href : "");
+
 	socket = io(options.url, {
 		transports: ["websocket"],
 		reconnection: true,
 		reconnectionAttempts: Infinity,
 		reconnectionDelay: 1000,
 		reconnectionDelayMax: 5000,
+		auth: { pageUrl },
 	});
 
 	unsubscribe = subscribe((data: CommitData) => {

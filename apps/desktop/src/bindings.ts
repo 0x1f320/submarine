@@ -5,16 +5,53 @@ import { invoke as __TAURI_INVOKE } from "@tauri-apps/api/core";
 /** Commands */
 export const commands = {
 	listProjects: () => typedError<Model[], string>(__TAURI_INVOKE("list_projects")),
-	createProject: (name: string, path: string) => typedError<Model, string>(__TAURI_INVOKE("create_project", { name, path })),
+	createProject: (name: string, path: string, host: string) => typedError<Model, string>(__TAURI_INVOKE("create_project", { name, path, host })),
+	listPages: (projectId: number) => typedError<Page[], string>(__TAURI_INVOKE("list_pages", { projectId })),
+	listCommits: (pageId: number) => typedError<Commit[], string>(__TAURI_INVOKE("list_commits", { pageId })),
+	// Return the port the Socket.IO server is listening on.
+	getSocketPort: () => __TAURI_INVOKE<number>("get_socket_port"),
+	// Return a snapshot of the Socket.IO server status.
+	getSocketStatus: () => __TAURI_INVOKE<SocketStatus>("get_socket_status"),
 };
 
 /* Types */
+export type Commit = {
+	id: number,
+	pageId: number,
+	phase: string,
+	timestamp: number,
+	componentCount: number,
+	totalTime: number,
+	createdAt: string,
+};
+
 export type Model = {
 	id: number,
 	name: string,
 	path: string,
+	host: string,
 	created_at: string,
 	updated_at: string,
+};
+
+export type Page = {
+	id: number,
+	project_id: number,
+	url: string,
+	created_at: string,
+	updated_at: string,
+};
+
+// Snapshot of the Socket.IO server status returned to the frontend.
+export type SocketStatus = {
+	// Whether the server is listening for connections.
+	listening: boolean,
+	// Port the server is bound to.
+	port: number,
+	// Number of currently connected clients.
+	connectedClients: number,
+	// Project IDs with active connections.
+	connectedProjects: number[],
 };
 
 /* Tauri Specta runtime */

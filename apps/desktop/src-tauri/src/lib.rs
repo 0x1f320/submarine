@@ -11,6 +11,8 @@ pub fn run() {
     let builder = Builder::<tauri::Wry>::new().commands(collect_commands![
         command::project::list_projects,
         command::project::create_project,
+        command::page::list_pages,
+        command::commit::list_commits,
         command::socket::get_socket_port,
         command::socket::get_socket_status,
     ]);
@@ -37,10 +39,10 @@ pub fn run() {
             ))
             .expect("Failed to initialize database");
 
-            app.manage(db);
+            // Socket.IO server (needs its own clone before db is moved into manage)
+            let socket_state = tauri::async_runtime::block_on(socket::start(db.clone()));
 
-            // Socket.IO server
-            let socket_state = tauri::async_runtime::block_on(socket::start());
+            app.manage(db);
             app.manage(socket_state);
 
             Ok(())

@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { commands } from "@/bindings";
 import { Button } from "@/components/ui/button";
 import type { useTheme } from "@/hooks/use-theme";
 import { useProjectStore } from "@/stores/project-store";
@@ -67,6 +69,11 @@ export function Header({
 	const selectedProject = useProjectStore((s) => s.selectedProject);
 	const title = selectedProject?.name ?? "Submarine";
 
+	const [port, setPort] = useState<number | null>(null);
+	useEffect(() => {
+		commands.getSocketPort().then(setPort);
+	}, []);
+
 	return (
 		<header
 			data-tauri-drag-region
@@ -77,6 +84,15 @@ export function Header({
 			</h1>
 
 			<div className="flex items-center gap-2">
+				{port !== null && (
+					<span className="flex items-center gap-2.5 rounded-md border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground select-none">
+						<span className="relative flex size-2">
+							<span className="absolute inline-flex size-full animate-ping rounded-full bg-green-400 opacity-75" />
+							<span className="relative inline-flex size-2 rounded-full bg-green-500" />
+						</span>
+						http://localhost:{port}
+					</span>
+				)}
 				<Button
 					size="icon"
 					variant="ghost"
