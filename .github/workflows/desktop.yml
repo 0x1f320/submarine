@@ -71,4 +71,4 @@ jobs:
         env:
           SCCACHE_GHA_ENABLED: ${{ steps.sccache-probe.outputs.ok == 'true' && 'true' || 'false' }}
           RUSTC_WRAPPER: ${{ steps.sccache-probe.outputs.ok == 'true' && 'sccache' || '' }}
-        run: pnpm --filter @submarine/desktop tauri build
+        run: pnpm --filter @submarine/desktop tauri build --debug
