@@ -96,9 +96,6 @@ importers:
       react:
         specifier: ^19.1.0
         version: 19.2.4
-      socket.io-client:
-        specifier: ^4.8.3
-        version: 4.8.3
     devDependencies:
       '@submarine/types':
         specifier: workspace:*
@@ -112,6 +109,9 @@ importers:
       bippy:
         specifier: ^0.5.37
         version: 0.5.37(react@19.2.4)
+      socket.io-client:
+        specifier: ^4.8.3
+        version: 4.8.3
       tsdown:
         specifier: ^0.21.7
         version: 0.21.7(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(typescript@5.8.3)
