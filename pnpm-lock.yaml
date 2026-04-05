@@ -23,6 +23,9 @@ importers:
       '@fontsource-variable/geist-mono':
         specifier: ^5.2.7
         version: 5.2.7
+      '@submarine/react':
+        specifier: workspace:^
+        version: link:../../packages/react
       '@tailwindcss/vite':
         specifier: ^4.2.2
         version: 4.2.2(vite@7.3.1(jiti@2.6.1)(lightningcss@1.32.0))
@@ -32,6 +35,9 @@ importers:
       '@tauri-apps/plugin-opener':
         specifier: ^2
         version: 2.5.3
+      bippy:
+        specifier: ^0.5.37
+        version: 0.5.37(react@19.2.4)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -93,6 +99,9 @@ importers:
 
   packages/react:
     dependencies:
+      bippy:
+        specifier: ^0.5.37
+        version: 0.5.37(react@19.2.4)
       react:
         specifier: ^19.1.0
         version: 19.2.4
@@ -1034,6 +1043,11 @@ packages:
     resolution: {integrity: sha512-fOVLPAsFTsQfuCkvahZkzq6nf8KvGWanlYoTh0SVA0A/PIUxQGU2AOZAoD95n2gFLVDW/jP6sbGLny95nmEuHA==}
     engines: {node: '>=6.0.0'}
     hasBin: true
+
+  bippy@0.5.37:
+    resolution: {integrity: sha512-5+Xre/yCsrTKLTeiMcrZTKPOaCB9VSPJeWQD+t2MLd0CLD3HqduCVIqXoYsqt8LpNVtTEHeH3g3+XPiR5d7piA==}
+    peerDependencies:
+      react: '>=17.0.1'
 
   body-parser@2.2.2:
     resolution: {integrity: sha512-oP5VkATKlNwcgvxi0vM0p/D3n2C3EReYVX+DNYs5TjZFn/oQt2j+4sVJtSMr18pdRr8wjTcBl6LoV+FUwzPmNA==}
@@ -3076,6 +3090,10 @@ snapshots:
   balanced-match@4.0.4: {}
 
   baseline-browser-mapping@2.10.14: {}
+
+  bippy@0.5.37(react@19.2.4):
+    dependencies:
+      react: 19.2.4
 
   body-parser@2.2.2:
     dependencies:

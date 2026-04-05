@@ -11,6 +11,7 @@
 		"dev": "tsc --watch"
 	},
 	"dependencies": {
+		"bippy": "^0.5.37",
 		"react": "^19.1.0"
 	},
 	"devDependencies": {
