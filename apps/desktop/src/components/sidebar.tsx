@@ -13,9 +13,7 @@ export function Sidebar({ width }: { width: number }) {
 		queryFn: () => commands.getSocketStatus(),
 		refetchInterval: 2000,
 	});
-	const connectedProjects = new Set(
-		socketStatus?.connectedProjects ?? [],
-	);
+	const connectedProjects = new Set(socketStatus?.connectedProjects ?? []);
 
 	return (
 		<aside

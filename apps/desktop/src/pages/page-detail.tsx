@@ -47,10 +47,7 @@ export function PageDetail() {
 					value={avgTime.toFixed(1)}
 					unit="ms"
 				/>
-				<SummaryCard
-					label="Avg Components"
-					value={avgComponents.toFixed(0)}
-				/>
+				<SummaryCard label="Avg Components" value={avgComponents.toFixed(0)} />
 			</div>
 
 			<div className="rounded-md border">

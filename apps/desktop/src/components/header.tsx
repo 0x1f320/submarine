@@ -1,8 +1,8 @@
+import { useEffect, useState } from "react";
 import { commands } from "@/bindings";
 import { Button } from "@/components/ui/button";
 import type { useTheme } from "@/hooks/use-theme";
 import { useProjectStore } from "@/stores/project-store";
-import { useEffect, useState } from "react";
 
 type Theme = ReturnType<typeof useTheme>["theme"];
 
