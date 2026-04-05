@@ -5,6 +5,6 @@ export default defineConfig({
 	format: ["esm", "cjs"],
 	dts: true,
 	deps: {
-		onlyBundle: ["bippy"],
+		onlyBundle: ["bippy", "socket.io-client"],
 	},
 });

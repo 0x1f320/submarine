@@ -1,3 +1,4 @@
+export type { ClientToServer } from "./ClientToServer";
 export type { CommitData } from "./CommitData";
 export type { ComponentKind } from "./ComponentKind";
 export type { ComponentNode } from "./ComponentNode";
