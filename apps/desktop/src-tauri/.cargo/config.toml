@@ -9,11 +9,8 @@ rustflags = ["-C", "link-arg=-fuse-ld=mold"]
 linker = "clang"
 rustflags = ["-C", "link-arg=-fuse-ld=mold"]
 
-[target.x86_64-apple-darwin]
-rustflags = ["-C", "link-arg=-fuse-ld=lld"]
-
-[target.aarch64-apple-darwin]
-rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+# macOS: the default Apple linker (ld-prime / ld64) is already fast;
+# lld is not bundled with Xcode, so we leave the default.
 
 [target.x86_64-pc-windows-msvc]
-rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+linker = "rust-lld"
