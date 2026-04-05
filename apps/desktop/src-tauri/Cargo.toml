@@ -29,6 +29,18 @@ specta-typescript = "0.0.11"
 tauri-specta = { version = "=2.0.0-rc.24", features = ["typescript"] }
 chrono = { version = "0.4", features = ["serde"] }
 
+# Dev builds: maximise compile speed over runtime speed
+[profile.dev]
+opt-level = 0
+codegen-units = 256       # more parallel codegen units = faster compile
+incremental = true
+
+# CI release builds: still want reasonable compile times
+[profile.release]
+codegen-units = 16        # default is 16; keep explicit
+lto = "thin"              # much faster than fat LTO, still good size/perf
+strip = true              # strip debug symbols from release binary
+
 [lints.clippy]
 all = { level = "warn", priority = -1 }
 pedantic = { level = "warn", priority = -1 }

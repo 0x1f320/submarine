@@ -5,6 +5,9 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: 0
+  SCCACHE_GHA_ENABLED: true
+  RUSTC_WRAPPER: sccache
 
 jobs:
   check:
@@ -20,10 +23,10 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy, rustfmt
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: apps/desktop/src-tauri -> target
-      - run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev
+      - uses: mozilla-actions/sccache-action@v0.0.7
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev mold
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
       - run: pnpm turbo run typecheck --filter=@submarine/desktop...
@@ -39,13 +42,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        include:
-          - os: ubuntu-latest
-            deps: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev
-          - os: macos-latest
-            deps: ""
-          - os: windows-latest
-            deps: ""
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -54,11 +50,11 @@ jobs:
           node-version: 22
           cache: pnpm
       - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: apps/desktop/src-tauri -> target
-      - name: Install system dependencies
-        if: matrix.deps != ''
-        run: ${{ matrix.deps }}
+      - uses: mozilla-actions/sccache-action@v0.0.7
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev mold
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @submarine/desktop tauri build
