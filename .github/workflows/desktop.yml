@@ -6,8 +6,6 @@ on:
 env:
   CARGO_TERM_COLOR: always
   CARGO_INCREMENTAL: 0
-  SCCACHE_GHA_ENABLED: true
-  RUSTC_WRAPPER: sccache
 
 jobs:
   check:
@@ -24,6 +22,8 @@ jobs:
         with:
           components: clippy, rustfmt
       - uses: mozilla-actions/sccache-action@v0.0.7
+        id: sccache
+        continue-on-error: true
       - run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev mold
@@ -32,6 +32,9 @@ jobs:
       - run: pnpm turbo run typecheck --filter=@submarine/desktop...
       - name: cargo fmt & clippy
         working-directory: apps/desktop/src-tauri
+        env:
+          SCCACHE_GHA_ENABLED: ${{ steps.sccache.outcome == 'success' && 'true' || 'false' }}
+          RUSTC_WRAPPER: ${{ steps.sccache.outcome == 'success' && 'sccache' || '' }}
         run: cargo fmt --check && cargo clippy -- -D warnings
 
   build:
@@ -51,10 +54,16 @@ jobs:
           cache: pnpm
       - uses: dtolnay/rust-toolchain@stable
       - uses: mozilla-actions/sccache-action@v0.0.7
+        id: sccache
+        continue-on-error: true
       - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev mold
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @submarine/desktop tauri build
+      - name: Build
+        env:
+          SCCACHE_GHA_ENABLED: ${{ steps.sccache.outcome == 'success' && 'true' || 'false' }}
+          RUSTC_WRAPPER: ${{ steps.sccache.outcome == 'success' && 'sccache' || '' }}
+        run: pnpm --filter @submarine/desktop tauri build
