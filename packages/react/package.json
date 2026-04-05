@@ -25,6 +25,7 @@
 		"dev": "tsdown --watch"
 	},
 	"devDependencies": {
+		"@submarine/types": "workspace:*",
 		"@submarine/typescript-config": "workspace:*",
 		"@types/react": "^19.1.8",
 		"bippy": "^0.5.37",
