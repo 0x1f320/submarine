@@ -50,6 +50,7 @@ pnpm workspaces monorepo with Turborepo. Desktop app (Tauri v2) with shared Type
 - **All PRs use squash merge.** No merge commits or rebase merges.
 - **PR titles follow [Conventional Commits](https://www.conventionalcommits.org/) with scope.** Examples: `feat(web): add settings page`, `fix(tauri): handle null window title`, `refactor(mcp): extract ipc handler`.
 - **Issue titles are written in natural language.** Do not use conventional commit prefixes in issue titles.
+- **PR content must be written in English.** Titles, descriptions, and test plans are always in English regardless of conversation language.
 
 ## Project Structure
 
