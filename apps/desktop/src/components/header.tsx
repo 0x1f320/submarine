@@ -77,8 +77,8 @@ export function Header({
 			</div>
 
 			<div className="flex items-center gap-2">
-				<Button size="sm" variant="default" className="h-7 gap-1.5 text-xs">
-					<span className="size-2 rounded-full bg-current animate-pulse" />
+				<Button size="sm" variant="default" className="h-7 gap-2.5 text-xs">
+					<span className="size-1.5 rounded-full bg-current animate-pulse shrink-0" />
 					Recording
 				</Button>
 				<Button size="sm" variant="outline" className="h-7 text-xs">

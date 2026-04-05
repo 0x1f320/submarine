@@ -17,7 +17,7 @@ pnpm workspaces monorepo with Turborepo. Desktop app (Tauri v2) with shared Type
 - **React 19** + **TypeScript** + **Vite**
 - **Tailwind CSS v4** — via `@tailwindcss/vite` plugin. Theme tokens defined in `app.css` using `@theme inline`.
 - **shadcn/ui** — Component library. Components live in `src/components/ui/`. Generated via `npx shadcn@latest add <component>`. Config in `components.json`.
-- **Geist Variable** — Font loaded via `@fontsource-variable/geist`.
+- **Pretendard Variable** — Font bundled locally in `src/assets/fonts/`. Loaded via `@font-face` in `app.css`.
 
 ### Backend
 - **Tauri v2** — Desktop shell. Config in `src-tauri/tauri.conf.json`, capabilities in `src-tauri/capabilities/`.
@@ -48,7 +48,7 @@ pnpm workspaces monorepo with Turborepo. Desktop app (Tauri v2) with shared Type
 ## Git Workflow
 
 - **All PRs use squash merge.** No merge commits or rebase merges.
-- **PR titles follow [Conventional Commits](https://www.conventionalcommits.org/).** Examples: `feat: add settings page`, `fix: handle null window title`, `refactor: extract ipc handler`.
+- **PR titles follow [Conventional Commits](https://www.conventionalcommits.org/) with scope.** Examples: `feat(web): add settings page`, `fix(tauri): handle null window title`, `refactor(mcp): extract ipc handler`.
 - **Issue titles are written in natural language.** Do not use conventional commit prefixes in issue titles.
 
 ## Project Structure
