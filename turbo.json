@@ -10,6 +10,7 @@
 			"persistent": true
 		},
 		"dev:tauri": {
+			"dependsOn": ["^dev"],
 			"cache": false,
 			"persistent": true
 		},
